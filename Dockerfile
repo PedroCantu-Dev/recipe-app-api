@@ -19,9 +19,9 @@ ARG DEV=false
 #so we chain commands using && to keep it in one layer
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
-    apk add --update --no-cache postgresql-client &&\
+    apk add --update --no-cache postgresql-client jpeg-dev zlib-dev libjpeg && \
     apk add --update --no-cache --virtual .tmp-build-deps \
-        build-base postgresql-dev musl-dev && \
+        build-base postgresql-dev musl-dev zlib-dev jpeg-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [  $DEV = "true" ];\
         then /py/bin/pip install -r /tmp/requirements.dev.txt ; \

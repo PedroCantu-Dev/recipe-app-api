@@ -9,25 +9,27 @@ services:
     volumes:
       - ./app:/app
     command: >
-      sh -c "python manage.py wait_for_db && 
+      sh -c "python manage.py wait_for_db &&
              python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
     environment:
       - DB_HOST=db
       - DB_NAME=dev_db
       - DB_USER=dev_user
-      - DB_PASSWORD=dev_password
+      - DB_PASSWORD=changeme123
     depends_on:
       - db
   db:
-    image: postgres:13
+    image: postgres:18
+    ports:
+      - "5433:5432"
     volumes:
       - dev-db-data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: dev_db
       POSTGRES_USER: dev_user
-      POSTGRES_PASSWORD: dev_password
-      
+      POSTGRES_PASSWORD: changeme123
+
 # The following syntax is also accepted, but be consistent
 #environment:
 #      - POSTGRES_DB=dev_db
@@ -36,3 +38,7 @@ services:
 
 volumes:
   dev-db-data:
+
+networks:
+  default:
+    driver: bridge
